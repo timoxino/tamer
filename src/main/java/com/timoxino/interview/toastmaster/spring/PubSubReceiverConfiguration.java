@@ -17,7 +17,7 @@ public class PubSubReceiverConfiguration {
   private final static Logger LOGGER = LoggerFactory.getLogger(PubSubReceiverConfiguration.class);
 
   @Bean
-  public Consumer<Message<String>> receiveMessageFromTopicTwo() {
+  public Consumer<Message<String>> receiveMessageFromCvPendingTopic() {
     return message -> {
       LOGGER.info(
           "Message arrived via an input binder from cv_pending_topic! Payload: " + message.getPayload());
