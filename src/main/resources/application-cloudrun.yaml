@@ -7,7 +7,7 @@ spring:
             consumer:
               auto-create-resources: false
       bindings:
-        receiveMessageFromCvPendingTopic-in-0.destination: cv_pending_topic
+        receiveMessageFromCvPendingTopic-in-0.destination: pending_cv_topic
     gcp:
       core:
         enabled: true
