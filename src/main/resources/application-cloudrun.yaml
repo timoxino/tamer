@@ -1,8 +1,13 @@
 spring:
   cloud:
     stream:
+      gcp:
+        pubsub:
+          default:
+            consumer:
+              auto-create-resources: false
       bindings:
-        receiveMessageFromCvPendingTopic-in-0.destination: cv_pending_topic 
+        receiveMessageFromCvPendingTopic-in-0.destination: cv_pending_topic
     gcp:
       core:
         enabled: true
