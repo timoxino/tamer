@@ -1,16 +1,10 @@
 spring:
   cloud:
-    stream:
-      gcp:
-        pubsub:
-          default:
-            consumer:
-              auto-create-resources: false
-      bindings:
-        receiveMessageFromCvPendingTopic-in-0.destination: pending_cv_topic
     gcp:
       core:
         enabled: true
       pubsub:
+        enabled: true
+      storage:
         enabled: true
       project-id: timoxino
