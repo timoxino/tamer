@@ -1,4 +1,4 @@
-package com.timoxino.interview.toastmaster;
+package com.timoxino.interview.tamer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

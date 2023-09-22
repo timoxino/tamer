@@ -1,4 +1,4 @@
-package com.timoxino.interview.toastmaster;
+package com.timoxino.interview.tamer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

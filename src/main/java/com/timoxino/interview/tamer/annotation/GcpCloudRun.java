@@ -1,4 +1,4 @@
-package com.timoxino.interview.toastmaster.annotation;
+package com.timoxino.interview.tamer.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
