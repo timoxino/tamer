@@ -38,16 +38,24 @@ public class GcsService implements StorageService {
         Blob blob = null;
         try {
 
-            BlobId blobId = BlobId.of("gs://interview_cv", fileName);
+            Resource file = cvBucket.createRelative("test.txt");
+            try (OutputStream os = ((WritableResource) file).getOutputStream()) {
+                os.write(123);
+            }
+            LOGGER.info("Testf file written");
+
+            BlobId blobId = BlobId.of("interview_cv", fileName);
             LOGGER.info("BlobId created");
-            blob = storage.get(blobId);
-            LOGGER.info("Blob retrieved");
+            // blob = storage.get(blobId);
+            byte[] readAllBytes = storage.readAllBytes(blobId);
+            LOGGER.info("Blob retrieved. Bytes: {}", readAllBytes);
 
             if (blob == null) {
                 throw new NullPointerException("Blob object is not initialized.");
             }
         } catch (Exception e) {
-            LOGGER.error("Error while reading the file. Exception: {}. Stack trace: ", e.getClass().toString(), e.getStackTrace());
+            LOGGER.error("Error while reading the file. Exception: {}. Stack trace: ", e.getClass().toString(),
+                    e.getStackTrace());
         }
 
         byte[] fileContent = blob.getContent();
