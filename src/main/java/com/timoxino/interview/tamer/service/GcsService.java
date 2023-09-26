@@ -39,7 +39,7 @@ public class GcsService implements StorageService {
         try {
 
             BlobId blobId = BlobId.of("gs://interview_cv", fileName);
-            LOGGER.info("BlobId creted");
+            LOGGER.info("BlobId created");
             blob = storage.get(blobId);
             LOGGER.info("Blob retrieved");
 
@@ -47,7 +47,7 @@ public class GcsService implements StorageService {
                 throw new NullPointerException("Blob object is not initialized.");
             }
         } catch (Exception e) {
-            LOGGER.error("Error while reading the file", e.getMessage());
+            LOGGER.error("Error while reading the file. Exception: {}. Stack trace: ", e.getClass().toString(), e.getStackTrace());
         }
 
         byte[] fileContent = blob.getContent();
