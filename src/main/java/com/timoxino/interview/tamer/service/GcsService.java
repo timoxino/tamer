@@ -35,14 +35,23 @@ public class GcsService implements StorageService {
     public String readCvFile(String fileName) throws IOException {
         LOGGER.info("Reading the file {} from the bucket gs://interview_cv", fileName);
         // Storage storage = StorageOptions.newBuilder().build().getService();
-        BlobId blobId = BlobId.of("gs://interview_cv", fileName);
-        Blob blob = storage.get(blobId);
+        Blob blob = null;
+        try {
 
-        if (blob == null) {
-            throw new NullPointerException("Blob object is not initialized.");
+            BlobId blobId = BlobId.of("gs://interview_cv", fileName);
+            LOGGER.info("BlobId creted");
+            blob = storage.get(blobId);
+            LOGGER.info("Blob retrieved");
+
+            if (blob == null) {
+                throw new NullPointerException("Blob object is not initialized.");
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error while reading the file", e.getMessage());
         }
 
         byte[] fileContent = blob.getContent();
+        LOGGER.info("Blob content retrieved");
         return new String(fileContent);
 
         /*

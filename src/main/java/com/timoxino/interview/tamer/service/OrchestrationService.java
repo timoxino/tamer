@@ -13,7 +13,7 @@ import com.timoxino.interview.shared.dto.CandidateExtractedSkillsMessage;
 @Service
 public class OrchestrationService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GcsService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrchestrationService.class);
 
     @Autowired
     CompletionService completionService;
