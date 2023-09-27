@@ -22,9 +22,10 @@ public class OrchestrationService {
     StorageService storageService;
 
     public CandidateExtractedSkillsMessage augmentProfile(CandidateBaseMessage message) throws IOException {
-        LOGGER.info("Augmenting the profile for the cv {}", message.getCvUri());
-        String cv = storageService.readCvFile("Test.txt");
-        LOGGER.info("CV content: {}", cv);
+        String cvFileName = message.getCvUri();
+        LOGGER.info("Augmenting the profile for the CV {}", cvFileName);
+        String cvContent = storageService.readCvFile(cvFileName);
+        LOGGER.info("CV file {} content: {}", cvFileName, cvContent);
         return new CandidateExtractedSkillsMessage();
     }
 }
