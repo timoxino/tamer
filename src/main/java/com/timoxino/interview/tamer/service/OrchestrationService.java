@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.timoxino.interview.shared.dto.CandidateBaseMessage;
 import com.timoxino.interview.shared.dto.CandidateExtractedSkillsMessage;
+import com.timoxino.interview.tamer.spring.PubSubSenderConfiguration.PubSubSkillsGateway;
 
 @Service
 public class OrchestrationService {
@@ -21,11 +22,16 @@ public class OrchestrationService {
     @Autowired
     StorageService storageService;
 
-    public CandidateExtractedSkillsMessage augmentProfile(CandidateBaseMessage message) throws IOException {
+    @Autowired
+    PubSubSkillsGateway pubSubSkillsGateway;
+
+    public void augmentProfile(CandidateBaseMessage message) throws IOException {
         String cvFileName = message.getCvUri();
         LOGGER.info("Augmenting the profile for the CV {}", cvFileName);
         String cvContent = storageService.readCvFile(cvFileName);
         LOGGER.info("CV file {} content: {}", cvFileName, cvContent);
-        return new CandidateExtractedSkillsMessage();
+        CandidateExtractedSkillsMessage request = new CandidateExtractedSkillsMessage();
+        request.setCvUri(cvFileName);
+        pubSubSkillsGateway.sendSkillsToPubSub(request);
     }
 }
