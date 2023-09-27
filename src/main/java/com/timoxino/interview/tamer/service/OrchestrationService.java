@@ -1,6 +1,7 @@
 package com.timoxino.interview.tamer.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,20 @@ public class OrchestrationService {
     @Autowired
     PubSubSkillsGateway pubSubSkillsGateway;
 
-    public void augmentProfile(CandidateBaseMessage message) throws IOException {
-        String cvFileName = message.getCvUri();
+    public void augmentProfile(CandidateBaseMessage profile) throws IOException {
+        String cvFileName = profile.getCvUri();
         LOGGER.info("Augmenting the profile for the CV {}", cvFileName);
+        
         String cvContent = storageService.readCvFile(cvFileName);
-        LOGGER.info("CV file {} content: {}", cvFileName, cvContent);
-        CandidateExtractedSkillsMessage request = new CandidateExtractedSkillsMessage();
-        request.setCvUri(cvFileName);
-        pubSubSkillsGateway.sendSkillsToPubSub(request);
+        List<String> skillsDetected = completionService.detectSkills(cvContent);
+        Integer seniorityLevelEvaluated = completionService.evaluateSeniorityLevel(cvContent);
+
+        CandidateExtractedSkillsMessage message = new CandidateExtractedSkillsMessage();
+        message.setCvUri(cvFileName);
+        message.setRole(profile.getRole());
+        message.setLvlExpected(profile.getLvlExpected());
+        message.setSkills(skillsDetected);
+        message.setLvlEstimated(seniorityLevelEvaluated);
+        pubSubSkillsGateway.sendSkillsToPubSub(message);
     }
 }
