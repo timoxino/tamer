@@ -20,8 +20,7 @@ public class GcsService implements StorageService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(GcsService.class);
 
-    @Value("gs://interview_cv")
-    private Resource cvBucket;
+    final static String BUCKET_CV = "interview_cv";
 
     @Value("gs://interview_cv_evaluation")
     private Resource evaluationBucket;
@@ -33,32 +32,11 @@ public class GcsService implements StorageService {
     Storage storage;
 
     public String readCvFile(String fileName) throws IOException {
-        LOGGER.info("Reading the file {} from the bucket gs://interview_cv", fileName);
-        Blob blob = null;
-        try {
+        LOGGER.debug("Reading the file {} from the bucket {}", fileName, BUCKET_CV);
 
-            BlobId blobId = BlobId.of("interview_cv", fileName);
-            LOGGER.info("BlobId created");
-            blob = storage.get(blobId);
-            LOGGER.info("Blob retrieved");
-
-            if (blob == null) {
-                throw new NullPointerException("Blob object is not initialized.");
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error while reading the file. Exception: {}. Stack trace: ", e.getClass().toString(),
-                    e.getStackTrace());
-        }
-
-        byte[] fileContent = blob.getContent();
-        LOGGER.info("Blob content retrieved");
-        return new String(fileContent);
-
-        /*
-         * return StreamUtils.copyToString(
-         * cvBucket.getInputStream(),
-         * Charset.defaultCharset());
-         */
+        BlobId blobId = BlobId.of(BUCKET_CV, fileName);
+        Blob blob = storage.get(blobId);
+        return new String(blob.getContent());
     }
 
     @Override
