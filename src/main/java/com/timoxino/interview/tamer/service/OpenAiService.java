@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class OpenAiService implements CompletionService {
 
     @Override
-    public String evaluateSeniorityLevel(String cv) {
+    public Integer evaluateSeniorityLevel(String cv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'evaluateSeniorityLevel'");
     }
