@@ -80,6 +80,8 @@ jobs:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           image: ${{ env.GAR_LOCATION }}/${{ env.PROJECT_ID }}/${{ env.APPLICATION }}/${{ env.SERVICE }}
+          secrets: |
+            openai.token=tamer-openai-token:latest
           env_vars: |
             spring.profiles.active=cloudrun
           flags: '--min-instances=1 --max-instances=1'
