@@ -31,8 +31,8 @@ public class OrchestrationService {
         LOGGER.info("Augmenting the profile for the CV {}", cvFileName);
         
         String cvContent = storageService.readCvFile(cvFileName);
-        List<String> skillsDetected = completionService.detectSkills(cvContent);
-        Integer seniorityLevelEvaluated = completionService.evaluateSeniorityLevel(cvContent);
+        List<String> skillsDetected = completionService.detectSkills(cvContent, profile.getRole());
+        Integer seniorityLevelEvaluated = completionService.evaluateSeniorityLevel(cvContent, profile.getRole());
 
         CandidateExtractedSkillsMessage message = new CandidateExtractedSkillsMessage();
         message.setCvUri(cvFileName);
