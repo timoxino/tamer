@@ -30,16 +30,16 @@ public class OrchestrationService {
         String cvFileName = profile.getCvUri();
         LOGGER.info("Augmenting the profile for the CV {}", cvFileName);
         
-        String cvContent = storageService.readCvFile(cvFileName);
+        /* String cvContent = storageService.readCvFile(cvFileName);
         List<String> skillsDetected = completionService.detectSkills(cvContent, profile.getRole());
-        Integer seniorityLevelEvaluated = completionService.evaluateSeniorityLevel(cvContent, profile.getRole());
+        Integer seniorityLevelEvaluated = completionService.evaluateSeniorityLevel(cvContent, profile.getRole()); */
 
         CandidateExtractedSkillsMessage message = new CandidateExtractedSkillsMessage();
         message.setCvUri(cvFileName);
         message.setRole(profile.getRole());
         message.setLvlExpected(profile.getLvlExpected());
-        message.setSkills(skillsDetected);
-        message.setLvlEstimated(seniorityLevelEvaluated);
+        /* message.setSkills(skillsDetected);
+        message.setLvlEstimated(seniorityLevelEvaluated); */
         pubSubSkillsGateway.sendSkillsToPubSub(message);
     }
 }
