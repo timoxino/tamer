@@ -3,8 +3,6 @@ package com.timoxino.interview.tamer.service;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -15,10 +13,11 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class GcsService implements StorageService {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(GcsService.class);
 
     final static String BUCKET_CV = "interview_cv";
 
@@ -32,7 +31,7 @@ public class GcsService implements StorageService {
     Storage storage;
 
     public String readCvFile(String fileName) throws IOException {
-        LOGGER.debug("Reading the file {} from the bucket {}", fileName, BUCKET_CV);
+        log.info("Reading the file {} from the bucket {}", fileName, BUCKET_CV);
 
         BlobId blobId = BlobId.of(BUCKET_CV, fileName);
         Blob blob = storage.get(blobId);

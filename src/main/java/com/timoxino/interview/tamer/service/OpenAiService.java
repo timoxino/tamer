@@ -10,6 +10,9 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class OpenAiService implements CompletionService {
 
@@ -54,10 +57,13 @@ public class OpenAiService implements CompletionService {
     }
 
     private String initiateCompletion(String prompt) {
+        log.info("Completion initiation for the prompt '{}'", prompt);
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder().model("gpt-3.5-turbo")
                 .temperature(0.0).n(1).messages(Arrays.asList(new ChatMessage("user", prompt)))
                 .build();
+        log.info("Completion request created");
         ChatCompletionResult completion = openAiClient.createChatCompletion(chatCompletionRequest);
+        log.info("Completion finished");
         return completion.getChoices().get(0).getMessage().getContent();
     }
 
