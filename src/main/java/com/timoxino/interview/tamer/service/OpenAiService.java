@@ -3,17 +3,16 @@ package com.timoxino.interview.tamer.service;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.ai.chat.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatCompletionResult;
-import com.theokanning.openai.completion.chat.ChatMessage;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class OpenAiService implements CompletionService {
 
     final static String PROMPT_TEMPLATE_EVALUATE_SENIORITY_LEVEL = """
@@ -42,29 +41,24 @@ public class OpenAiService implements CompletionService {
             """;
 
     @Autowired
-    com.theokanning.openai.service.OpenAiService openAiClient;
+    private final ChatClient chatClient;
 
     @Override
     public Integer evaluateSeniorityLevel(String cv, String role) {
         String prompt = PROMPT_TEMPLATE_EVALUATE_SENIORITY_LEVEL.replace("{role}", role).replace("{cv}", cv);
-        return Integer.valueOf(initiateCompletion(prompt));
+        return Integer.valueOf(executeCompletion(prompt));
     }
 
     @Override
     public List<String> detectSkills(String cv, String role) {
         String prompt = PROMPT_TEMPLATE_DETECT_SKILLS.replace("{role}", role).replace("{cv}", cv);
-        return Arrays.asList(initiateCompletion(prompt).split(","));
+        return Arrays.asList(executeCompletion(prompt).split(","));
     }
 
-    private String initiateCompletion(String prompt) {
-        log.info("Completion initiation for the prompt '{}'", prompt);
-        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder().model("gpt-3.5-turbo")
-                .temperature(0.0).n(1).messages(Arrays.asList(new ChatMessage("user", prompt)))
-                .build();
-        log.info("Completion request created");
-        ChatCompletionResult completion = openAiClient.createChatCompletion(chatCompletionRequest);
-        log.info("Completion finished");
-        return completion.getChoices().get(0).getMessage().getContent();
+    private String executeCompletion(String prompt) {
+        log.info("Completion initiation for the prompt '{}'", prompt.substring(0, 20));
+        String response = chatClient.call(prompt);
+        log.info("Completion finished. The beginning of the response is '{}", response.substring(0, 10));
+        return response;
     }
-
 }
