@@ -1,4 +1,7 @@
 spring:
+  ai:
+    openai:
+      api-key: test
   cloud:
     gcp:
       core:
