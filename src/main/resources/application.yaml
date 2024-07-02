@@ -1,6 +1,10 @@
 spring:
   ai:
     openai:
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 1.0
       api-key: test
   cloud:
     gcp:
