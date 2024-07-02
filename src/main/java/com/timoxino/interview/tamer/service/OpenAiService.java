@@ -56,9 +56,9 @@ public class OpenAiService implements CompletionService {
     }
 
     private String executeCompletion(String prompt) {
-        log.info("Completion initiation for the prompt '{}'", prompt.substring(0, 20));
+        log.info("Completion initiation for the prompt '{}'", prompt.substring(0, prompt.length() / 4));
         String response = chatClient.call(prompt);
-        log.info("Completion finished. The beginning of the response is '{}", response.substring(0, 10));
+        log.info("Completion finished. The response is '{}", response);
         return response;
     }
 }
