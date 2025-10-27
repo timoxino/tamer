@@ -3,7 +3,7 @@ package com.timoxino.interview.tamer.service;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +57,10 @@ public class OpenAiService implements CompletionService {
 
     private String executeCompletion(String prompt) {
         log.info("Completion initiation for the prompt '{}'", prompt.substring(0, prompt.length() / 4));
-        String response = chatClient.call(prompt);
+        String response = chatClient.prompt()
+                .user(prompt)
+                .call()
+                .content();
         log.info("Completion finished. The response is '{}", response);
         return response;
     }
